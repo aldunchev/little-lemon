@@ -7,6 +7,7 @@ import { fetchAPI } from './api/fetchAPI';
 
 const initialState = {
   date: '',
+  time: '',
   guests: 0,
   availableTimes: ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
 };
@@ -15,9 +16,11 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE_DATE':
       return { ...state, date: action.payload };
+    case 'UPDATE_TIME':
+      return { ...state, time: action.payload };
     case 'UPDATE_GUESTS':
-      return { ...state, guests: action.payload };
-    case 'UPDATE_TIMES':
+      return { ...state, guests: isNaN(action.payload) ? 0 : action.payload };
+    case 'UPDATE_AVAILABLE_TIMES':
       if (action.payload) {
         return { ...state, availableTimes: fetchAPI(new Date(action.payload)) };
       }
@@ -40,6 +43,7 @@ export function Main() {
             <BookingPage
               availableTimes={state.availableTimes}
               date={state.date}
+              time={state.time}
               guests={state.guests}
               dispatch={dispatch}
             />

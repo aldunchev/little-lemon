@@ -1,20 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 
-export function BookingForm({availableTimes, date, guests, dispatch}) {
+export function BookingForm({ availableTimes, date, time, guests, dispatch }) {
   const navigate = useNavigate();
 
   const handleDateChange = (e) => {
-    dispatch({type: 'UPDATE_DATE', payload: e.target.value});
-    dispatch({type: 'UPDATE_TIMES', payload: e.target.value});
+    dispatch({ type: 'UPDATE_DATE', payload: e.target.value });
+    dispatch({ type: 'UPDATE_AVAILABLE_TIMES', payload: e.target.value });
   };
 
   const handleTimeChange = (e) => {
-    // setAvailableTimes([e.target.value]);
-    console.log(e.target.value);
+    dispatch({ type: 'UPDATE_TIME', payload: e.target.value });
   };
 
   const handleGuestsChange = (e) => {
-    dispatch({type: 'UPDATE_GUESTS', payload: parseInt(e.target.value)});
+    dispatch({ type: 'UPDATE_GUESTS', payload: parseInt(e.target.value) });
   };
 
   const handleFormSubmit = (e) => {
@@ -28,15 +27,23 @@ export function BookingForm({availableTimes, date, guests, dispatch}) {
         <label className='block' htmlFor='date'>
           Choose date
         </label>
-        <input id='date' type='date' value={date} onChange={handleDateChange} />
+        <input id='date' type='date' value={date} onChange={handleDateChange} required/>
       </div>
       <div className='py-2'>
         <label className='block' htmlFor='time'>
           Choose time
         </label>
-        <select id='time' value={availableTimes ? availableTimes[0] : ''} onChange={handleTimeChange}>
-          {availableTimes && availableTimes.map((time) => (
-            <option key={time}>{time}</option>
+        <select
+          id="time"
+          value={time}
+          onChange={handleTimeChange}
+          required
+        >
+          <option value="">Select a time</option>
+          {availableTimes.map(timeSlot => (
+            <option key={timeSlot} value={timeSlot}>
+              {timeSlot}
+            </option>
           ))}
         </select>
       </div>
@@ -48,9 +55,10 @@ export function BookingForm({availableTimes, date, guests, dispatch}) {
           type='number'
           placeholder='1'
           min='1'
-          max='10'
+          max='12'
           id='guests'
           value={guests}
+          required
           onChange={handleGuestsChange}
         />
       </div>
