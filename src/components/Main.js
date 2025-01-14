@@ -1,24 +1,34 @@
 import { Routes, Route } from 'react-router-dom';
 import { Homepage } from './Homepage';
 import { BookingPage } from './Bookingpage/Bookingpage';
+import { Contact } from './Contact';
 import { useReducer } from 'react';
+import { fetchAPI } from './api/fetchAPI';
 
-const initialTimes = ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
-
-export const initializeTimes = () => {
-  return initialTimes;
+const initialState = {
+  date: '',
+  guests: 0,
+  availableTimes: ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
 };
 
-export const updateTimes = (state, action) => {
-  return state;
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'UPDATE_DATE':
+      return { ...state, date: action.payload };
+    case 'UPDATE_GUESTS':
+      return { ...state, guests: action.payload };
+    case 'UPDATE_TIMES':
+      if (action.payload) {
+        return { ...state, availableTimes: fetchAPI(new Date(action.payload)) };
+      }
+      return state;
+    default:
+      return state;
+  }
 };
 
 export function Main() {
-  const [availableTimes, dispatch] = useReducer(
-    updateTimes,
-    initialTimes,
-    initializeTimes
-  );
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
     <main>
@@ -27,7 +37,18 @@ export function Main() {
         <Route
           path='/booking'
           element={
-            <BookingPage availableTimes={availableTimes} dispatch={dispatch} />
+            <BookingPage
+              availableTimes={state.availableTimes}
+              date={state.date}
+              guests={state.guests}
+              dispatch={dispatch}
+            />
+          }
+        />
+        <Route
+          path='/contact'
+          element={
+            <Contact contactData={state} />
           }
         />
       </Routes>

@@ -6,6 +6,11 @@ module.exports = {
     container: {
       center: true,
     },
+    colors: {
+      primary: 'rgb(var(--color-primary) / <alpha-value>)',
+      secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+      text: 'rgb(var(--color-text) / <alpha-value>)',
+    }
   },
   plugins: [
     require('@tailwindcss/forms')({

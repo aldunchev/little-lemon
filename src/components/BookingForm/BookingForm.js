@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export function BookingForm({availableTimes, dispatch}) {
-  const [date, setDate] = useState('');
-  const [guests, setGuest] = useState(0);
+export function BookingForm({availableTimes, date, guests, dispatch}) {
+  const navigate = useNavigate();
 
   const handleDateChange = (e) => {
-    setDate(e.target.value);
+    dispatch({type: 'UPDATE_DATE', payload: e.target.value});
     dispatch({type: 'UPDATE_TIMES', payload: e.target.value});
   };
 
@@ -15,12 +14,12 @@ export function BookingForm({availableTimes, dispatch}) {
   };
 
   const handleGuestsChange = (e) => {
-    setGuest(e.target.value);
+    dispatch({type: 'UPDATE_GUESTS', payload: parseInt(e.target.value)});
   };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log(date);
+    navigate('/contact');
   };
 
   return (
@@ -55,7 +54,7 @@ export function BookingForm({availableTimes, dispatch}) {
           onChange={handleGuestsChange}
         />
       </div>
-      <button type='submit'>Book now</button>
+      <button className='button button--primary' type='submit'>Book now</button>
     </form>
   );
 }

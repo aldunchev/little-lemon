@@ -1,0 +1,7 @@
+.button {
+  @apply flex items-center justify-center p-2 rounded-sm;
+}
+
+.button--primary {
+  @apply bg-secondary text-text;
+}
