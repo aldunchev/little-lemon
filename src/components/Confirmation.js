@@ -1,14 +1,15 @@
 import { ReactComponent as Success } from "../assets/icons/success.svg";
 import { formatDate } from "../utils/dateFormatter";
 
-export function Confirmation({ contactData }) {
-  const { guests, time, date } = contactData;
+export function Confirmation({ bookingState, contactState }) {
+  const { guests, time, date } = bookingState;
+  const { name, email, occasion, requirements } = contactState;
 
   return (
     <section>
       <div className="container max-w-screen-md text-center flex flex-col justify-center h-dvh">
         <div className="flex flex-col gap-6">
-          <h1 className="font-bold text-5xl">Congratulations</h1>
+          <h1 className="font-bold text-5xl">Congratulations {name}!</h1>
           <p>
             You have reserved a table for <strong>{guests}</strong> at
           </p>
@@ -17,7 +18,17 @@ export function Confirmation({ contactData }) {
               {time} on {formatDate(date)}
             </strong>
           </p>
-          <p>You will receive a confirmation email</p>
+          {occasion !== "none" && (
+            <p>
+              Occasion: <strong>{occasion}</strong>
+            </p>
+          )}
+          {requirements && (
+            <p>
+              Special requirements: <strong>{requirements}</strong>
+            </p>
+          )}
+          <p>A confirmation email will be sent to {email}</p>
         </div>
         <div className="mx-auto mt-4">
           <Success />

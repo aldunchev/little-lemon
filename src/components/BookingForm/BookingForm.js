@@ -52,19 +52,9 @@ export function BookingForm({ availableTimes, date, time, guests, dispatch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Create URL search params with booking details
-    const searchParams = new URLSearchParams({
-      date: date,
-      time: time,
-      guests: guests,
-    });
-
-    // Reset form state
-    dispatch({ type: "RESET_FORM" });
-
-    // Navigate with search params
-    navigate(`/contact?${searchParams.toString()}`);
+    if (validateForm()) {
+      navigate("/contact");
+    }
   };
 
   return (

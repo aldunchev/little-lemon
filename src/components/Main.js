@@ -4,10 +4,24 @@ import { BookingPage } from "./Bookingpage/Bookingpage";
 import { Contact } from "./Contact";
 import { useReducer } from "react";
 import { Confirmation } from "./Confirmation";
-import { bookingReducer, initialState } from "../reducers/bookingReducer";
+import {
+  bookingReducer,
+  initialState as bookingInitialState,
+} from "../reducers/bookingReducer";
+import {
+  contactReducer,
+  initialState as contactInitialState,
+} from "../reducers/contactReducer";
 
 export function Main() {
-  const [state, dispatch] = useReducer(bookingReducer, initialState);
+  const [bookingState, bookingDispatch] = useReducer(
+    bookingReducer,
+    bookingInitialState,
+  );
+  const [contactState, contactDispatch] = useReducer(
+    contactReducer,
+    contactInitialState,
+  );
 
   return (
     <main>
@@ -17,18 +31,32 @@ export function Main() {
           path="/booking"
           element={
             <BookingPage
-              availableTimes={state.availableTimes}
-              date={state.date}
-              time={state.time}
-              guests={state.guests}
-              dispatch={dispatch}
+              availableTimes={bookingState.availableTimes}
+              date={bookingState.date}
+              time={bookingState.time}
+              guests={bookingState.guests}
+              dispatch={bookingDispatch}
             />
           }
         />
-        <Route path="/contact" element={<Contact contactData={state} />} />
+        <Route
+          path="/contact"
+          element={
+            <Contact
+              bookingState={bookingState}
+              contactState={contactState}
+              dispatch={contactDispatch}
+            />
+          }
+        />
         <Route
           path="/confirmation"
-          element={<Confirmation contactData={state} />}
+          element={
+            <Confirmation
+              bookingState={bookingState}
+              contactState={contactState}
+            />
+          }
         />
       </Routes>
     </main>
