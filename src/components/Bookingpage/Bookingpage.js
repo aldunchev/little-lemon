@@ -1,19 +1,24 @@
-import { BookingForm } from '../BookingForm/BookingForm';
-import './Bookingpage.css';
+import { BookingForm } from "../BookingForm/BookingForm";
+import { Pill } from "../Pill";
+import "./Bookingpage.css";
 
 export function BookingPage({ availableTimes, date, time, guests, dispatch }) {
-
   return (
-    <section className='py-8'>
-      <div className='container max-w-screen-md'>
-        <h1>Book now</h1>
-        <h2>Available Times:</h2>
-        <ul>
-          {availableTimes.length > 0 ? availableTimes.map(timeSlot => (
-            <li key={timeSlot} className={timeSlot === time ? 'selected' : ''}>
-              {timeSlot}
-            </li>
-          )) : 'No available times'}
+    <section className="py-8">
+      <div className="container max-w-screen-md">
+        <h1 className="text-5xl mb-6">Book now</h1>
+        <h2 className="text-3xl mb-2">Available Times:</h2>
+        <ul className="flex gap-2 mb-8">
+          {availableTimes.length > 0
+            ? availableTimes.map((timeSlot) => (
+                <li
+                  key={timeSlot}
+                  className={timeSlot === time ? "selected" : ""}
+                >
+                  <Pill text={timeSlot} />
+                </li>
+              ))
+            : "No available times"}
         </ul>
         <BookingForm
           availableTimes={availableTimes}

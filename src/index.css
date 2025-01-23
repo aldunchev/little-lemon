@@ -6,4 +6,12 @@
   --color-primary: 73 94 87;
   --color-secondary: 244 206 20;
   --color-text: 0 0 0;
+  --color-error: 255 75 75;
+  --color-white: 255 255 255;
+}
+
+@layer utilities {
+  .container {
+    @apply px-4;
+  }
 }
