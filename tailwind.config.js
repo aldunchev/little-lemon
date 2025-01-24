@@ -12,6 +12,7 @@ module.exports = {
       text: "rgb(var(--color-text) / <alpha-value>)",
       error: "rgb(var(--color-error) / <alpha-value>)",
       white: "rgb(var(--color-white) / <alpha-value>)",
+      transparent: "var(--color-transparent)",
     },
   },
   plugins: [

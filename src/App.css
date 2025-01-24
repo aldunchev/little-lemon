@@ -5,3 +5,17 @@
 .button--primary {
   @apply bg-secondary text-text;
 }
+
+.main-nav {
+  a {
+    @apply border-b-2 border-transparent transition-colors;
+
+    &:hover {
+      @apply hover:border-primary;
+    }
+  }
+
+  .active {
+    @apply border-b-primary;
+  }
+}
