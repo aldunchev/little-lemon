@@ -1,8 +1,9 @@
 import { formatDate } from "../utils/dateFormatter";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-export function Contact({ bookingState, contactState, dispatch }) {
+export function Contact({ contactState, dispatch }) {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -47,10 +48,25 @@ export function Contact({ bookingState, contactState, dispatch }) {
     return Object.keys(newErrors).length === 0;
   };
 
+  const [searchParams] = useSearchParams();
+  const bookingDate = searchParams.get("date");
+  const bookingTime = searchParams.get("time");
+  const bookingGuests = searchParams.get("guests");
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      navigate("/confirmation");
+      const searchParams = new URLSearchParams({
+        name: contactState.name,
+        email: contactState.email,
+        occasion: contactState.occasion,
+        requirements: contactState.requirements,
+        date: bookingDate,
+        time: bookingTime,
+        guests: bookingGuests,
+      });
+      dispatch({ type: "RESET_CONTACT" });
+      navigate(`/confirmation?${searchParams.toString()}`);
     }
   };
 
@@ -59,14 +75,12 @@ export function Contact({ bookingState, contactState, dispatch }) {
       <div className="container max-w-screen-md">
         <h1 className="text-5xl mb-6">Contact Us</h1>
 
-        {bookingState.date && bookingState.time && bookingState.guests && (
-          <div className="mb-6 p-4 bg-gray-100 rounded">
-            <h2 className="text-2xl mb-2">Your Booking Details:</h2>
-            <p>Date: {formatDate(bookingState.date)}</p>
-            <p>Time: {bookingState.time}</p>
-            <p>Number of guests: {bookingState.guests}</p>
-          </div>
-        )}
+        <div className="mb-6 bg-gray-100 rounded">
+          <h2 className="text-2xl mb-2">Your Booking Details:</h2>
+          <p>Date: {bookingDate && formatDate(bookingDate)}</p>
+          <p>Time: {bookingTime}</p>
+          <p>Number of guests: {bookingGuests}</p>
+        </div>
 
         <form
           onSubmit={handleFormSubmit}

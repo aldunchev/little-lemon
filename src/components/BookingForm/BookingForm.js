@@ -53,7 +53,13 @@ export function BookingForm({ availableTimes, date, time, guests, dispatch }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      navigate("/contact");
+      const searchParams = new URLSearchParams({
+        date: date,
+        time: time,
+        guests: guests,
+      });
+      dispatch({ type: "RESET_FORM" });
+      navigate(`/contact?${searchParams.toString()}`);
     }
   };
 

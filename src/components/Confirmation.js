@@ -1,9 +1,16 @@
 import { ReactComponent as Success } from "../assets/icons/success.svg";
 import { formatDate } from "../utils/dateFormatter";
+import { useSearchParams } from "react-router-dom";
 
-export function Confirmation({ bookingState, contactState }) {
-  const { guests, time, date } = bookingState;
-  const { name, email, occasion, requirements } = contactState;
+export function Confirmation() {
+  const [searchParams] = useSearchParams();
+  const name = searchParams.get("name");
+  const occasion = searchParams.get("occasion");
+  const date = searchParams.get("date");
+  const time = searchParams.get("time");
+  const guests = searchParams.get("guests");
+  const requirements = searchParams.get("requirements");
+  const email = searchParams.get("email");
 
   return (
     <section>

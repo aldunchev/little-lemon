@@ -42,11 +42,7 @@ export function Main() {
         <Route
           path="/contact"
           element={
-            <Contact
-              bookingState={bookingState}
-              contactState={contactState}
-              dispatch={contactDispatch}
-            />
+            <Contact contactState={contactState} dispatch={contactDispatch} />
           }
         />
         <Route
