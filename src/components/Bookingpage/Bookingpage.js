@@ -8,7 +8,7 @@ export function BookingPage({ availableTimes, date, time, guests, dispatch }) {
       <div className="container max-w-screen-md">
         <h1 className="text-5xl mb-6">Book now</h1>
         <h2 className="text-3xl mb-2">Available Times:</h2>
-        <ul className="flex gap-2 mb-8">
+        <ul className="flex flex-wrap gap-2 mb-8">
           {availableTimes.length > 0
             ? availableTimes.map((timeSlot) => (
                 <li

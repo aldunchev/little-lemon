@@ -53,13 +53,22 @@ export function BookingForm({ availableTimes, date, time, guests, dispatch }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const searchParams = new URLSearchParams({
-        date: date,
-        time: time,
-        guests: guests,
-      });
-      dispatch({ type: "RESET_FORM" });
-      navigate(`/contact?${searchParams.toString()}`);
+      // Create temporary booking data
+      const bookingData = {
+        id: "temp_" + Date.now(), // Temporary ID
+        booking: {
+          date,
+          time,
+          guests,
+        },
+        contact: null, // Will be filled in the Contact form
+      };
+
+      // Save temporary booking
+      localStorage.setItem("tempBooking", JSON.stringify(bookingData));
+
+      // Navigate to contact page
+      navigate("/contact");
     }
   };
 

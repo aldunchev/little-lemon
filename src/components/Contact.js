@@ -1,45 +1,62 @@
 import { formatDate } from "../utils/dateFormatter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { saveBooking } from "../utils/storage";
 
-export function Contact({ contactState, dispatch }) {
-  const [errors, setErrors] = useState({});
+export function Contact() {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [tempBooking, setTempBooking] = useState(null);
+  const [contactData, setContactData] = useState({
+    name: "",
+    email: "",
+    occasion: "none",
+    requirements: "",
+  });
+
+  useEffect(() => {
+    const savedTempBooking = localStorage.getItem("tempBooking");
+    if (savedTempBooking) {
+      setTempBooking(JSON.parse(savedTempBooking));
+    } else {
+      // If no booking data, redirect to booking page
+      navigate("/booking");
+    }
+  }, [navigate]);
 
   const handleNameChange = (e) => {
-    dispatch({ type: "UPDATE_NAME", payload: e.target.value });
+    setContactData({ ...contactData, name: e.target.value });
   };
 
   const handleEmailChange = (e) => {
-    dispatch({ type: "UPDATE_EMAIL", payload: e.target.value });
+    setContactData({ ...contactData, email: e.target.value });
   };
 
   const handleOccasionChange = (e) => {
-    dispatch({ type: "UPDATE_OCCASION", payload: e.target.value });
+    setContactData({ ...contactData, occasion: e.target.value });
   };
 
   const handleRequirementsChange = (e) => {
-    dispatch({ type: "UPDATE_REQUIREMENTS", payload: e.target.value });
+    setContactData({ ...contactData, requirements: e.target.value });
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!contactState.name.trim()) {
+    if (!contactData.name.trim()) {
       newErrors.name = "Name is required";
-    } else if (contactState.name.trim().length < 3) {
+    } else if (contactData.name.trim().length < 3) {
       newErrors.name = "Name must be at least 3 characters";
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!contactState.email) {
+    if (!contactData.email) {
       newErrors.email = "Email is required";
-    } else if (!emailRegex.test(contactState.email)) {
+    } else if (!emailRegex.test(contactData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
 
-    if (contactState.requirements.length > 1000) {
+    if (contactData.requirements.length > 1000) {
       newErrors.requirements =
         "Special requirements cannot exceed 1000 characters";
     }
@@ -48,38 +65,38 @@ export function Contact({ contactState, dispatch }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const [searchParams] = useSearchParams();
-  const bookingDate = searchParams.get("date");
-  const bookingTime = searchParams.get("time");
-  const bookingGuests = searchParams.get("guests");
-
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const searchParams = new URLSearchParams({
-        name: contactState.name,
-        email: contactState.email,
-        occasion: contactState.occasion,
-        requirements: contactState.requirements,
-        date: bookingDate,
-        time: bookingTime,
-        guests: bookingGuests,
-      });
-      dispatch({ type: "RESET_CONTACT" });
-      navigate(`/confirmation?${searchParams.toString()}`);
+      // Combine booking and contact data
+      const finalBooking = {
+        ...tempBooking,
+        contact: contactData,
+      };
+
+      // Save final booking and get ID
+      const bookingId = saveBooking(tempBooking.booking, contactData);
+
+      // Clear temporary booking
+      localStorage.removeItem("tempBooking");
+
+      // Navigate to confirmation
+      navigate(`/confirmation/${bookingId}`);
     }
   };
+
+  if (!tempBooking) return null;
 
   return (
     <section className="py-8">
       <div className="container max-w-screen-md">
         <h1 className="text-5xl mb-6">Contact Us</h1>
 
-        <div className="mb-6 bg-gray-100 rounded">
+        <div className="mb-6 p-4 bg-gray-100 rounded">
           <h2 className="text-2xl mb-2">Your Booking Details:</h2>
-          <p>Date: {bookingDate && formatDate(bookingDate)}</p>
-          <p>Time: {bookingTime}</p>
-          <p>Number of guests: {bookingGuests}</p>
+          <p>Date: {formatDate(tempBooking.booking.date)}</p>
+          <p>Time: {tempBooking.booking.time}</p>
+          <p>Number of guests: {tempBooking.booking.guests}</p>
         </div>
 
         <form
@@ -93,7 +110,7 @@ export function Contact({ contactState, dispatch }) {
               type="text"
               id="name"
               required
-              value={contactState.name}
+              value={contactData.name}
               onChange={handleNameChange}
               placeholder="First Name Last Name"
             />
@@ -107,7 +124,7 @@ export function Contact({ contactState, dispatch }) {
               type="email"
               id="email"
               required
-              value={contactState.email}
+              value={contactData.email}
               onChange={handleEmailChange}
               placeholder="yourname@gmail.com"
             />
@@ -119,7 +136,7 @@ export function Contact({ contactState, dispatch }) {
             <label htmlFor="requirements">Occasion:</label>
             <select
               id="occasion"
-              value={contactState.occasion}
+              value={contactData.occasion}
               onChange={handleOccasionChange}
             >
               <option value="none">None(just want to have fun)</option>
@@ -132,7 +149,7 @@ export function Contact({ contactState, dispatch }) {
             <label htmlFor="requirements">Special Requirements:</label>
             <textarea
               id="requirements"
-              value={contactState.requirements}
+              value={contactData.requirements}
               onChange={handleRequirementsChange}
               placeholder="I do not eat garlic, etc."
             ></textarea>
