@@ -1,5 +1,10 @@
+import { Hero } from "./Hero";
+
 export function Homepage() {
   return (
-    <p>This is the homepage component</p>
+    <>
+      <Hero />
+      {/* Other homepage components will go here */}
+    </>
   );
 }
