@@ -79,6 +79,14 @@
     font-family: var(--heading-font);
   }
 
+  h1 {
+    @apply text-6xl;
+  }
+
+  h2 {
+    @apply text-5xl;
+  }
+
   .button {
     @apply flex items-center justify-center px-6 py-4 rounded-sm;
   }

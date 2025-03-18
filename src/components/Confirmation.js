@@ -29,9 +29,9 @@ export function Confirmation({ dispatch }) {
 
   return (
     <section>
-      <div className="container max-w-screen-md text-center flex flex-col justify-center h-dvh">
-        <div className="flex flex-col gap-6">
-          <h1 className="font-bold text-5xl">
+      <div className="container max-w-screen-md text-center flex flex-col justify-start mt-8 h-dvh">
+        <div className="flex flex-col gap-4 md:gap-6">
+          <h1 className="font-bold text-2xl md:text-5xl">
             Congratulations {contact.name}!
           </h1>
           <p>

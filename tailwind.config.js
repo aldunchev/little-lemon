@@ -13,6 +13,9 @@ module.exports = {
       error: "rgb(var(--color-error) / <alpha-value>)",
       white: "rgb(var(--color-white) / <alpha-value>)",
       transparent: "var(--color-transparent)",
+      "coral-pink": {
+        500: "#EE9972", // You can adjust this hex color to match your exact needs
+      },
     },
   },
   plugins: [
