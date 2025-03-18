@@ -3,7 +3,7 @@ import { fetchAPI } from "../components/api/fetchAPI";
 export const initialState = {
   date: "",
   time: "",
-  guests: 1,
+  guests: 0,
   availableTimes: ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"],
 };
 

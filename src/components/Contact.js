@@ -92,7 +92,7 @@ export function Contact() {
       <div className="container max-w-screen-md">
         <h1 className="text-5xl mb-6">Contact Us</h1>
 
-        <div className="mb-6 p-4 bg-gray-100 rounded">
+        <div className="mb-6 py-4 bg-gray-100 rounded">
           <h2 className="text-2xl mb-2">Your Booking Details:</h2>
           <p>Date: {formatDate(tempBooking.booking.date)}</p>
           <p>Time: {tempBooking.booking.time}</p>

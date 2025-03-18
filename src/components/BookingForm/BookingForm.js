@@ -111,7 +111,6 @@ export function BookingForm({ availableTimes, date, time, guests, dispatch }) {
         </label>
         <input
           type="number"
-          placeholder="1"
           min="1"
           max="12"
           id="guests"

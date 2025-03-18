@@ -52,7 +52,10 @@ export function Confirmation({ dispatch }) {
               Special requirements: <strong>{contact.requirements}</strong>
             </p>
           )}
-          <p>A confirmation email will be sent to {contact.email}</p>
+          <p>
+            A confirmation email will be sent to{" "}
+            <strong>{contact.email}</strong>
+          </p>
         </div>
         <div className="mx-auto mt-4">
           <Success />
